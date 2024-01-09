@@ -26,7 +26,13 @@ exports.RegisterUser = async (req, res) => {
         message: 'Email address is already registered',
       });
     }
-
+   const existingUserByContactNumber = await User.findOne({ ContactNumber });
+    if (existingUserByContactNumber) {
+      return res.status(409).json({
+        success: false,
+        message: 'Contact number is already registered',
+      });
+    }
     // Save a new user
     const newUser = new User({
       Name,
@@ -42,12 +48,12 @@ exports.RegisterUser = async (req, res) => {
       message: `Congratulations Buddy ${Name}`,
     };
     
-    // Send welcome email
-    await sendEmail(emailOptions);
+
 
     // Save the new user to the database
     await newUser.save();
-
+    // Send welcome email
+    await sendEmail(emailOptions);
     return res.status(200).json({
       success: true,
       data: newUser,
