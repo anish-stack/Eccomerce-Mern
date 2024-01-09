@@ -9,16 +9,25 @@ exports.RegisterUser = async (req, res) => {
   try {
     const { Name, Email, Password, ContactNumber, Role } = req.body;
 
-    // validate if no any empty feild
+    // Validate if no any empty field
     if (!Name || !Email || !Password || !ContactNumber) {
-      return res.status(403).json({
+      return res.status(400).json({
         success: false,
-        message: "All fields are required",
+        message: 'All fields are required',
       });
     }
 
-    //save a user in varibale 
+    // Check if the email already exists in the database
+    const existingUser = await User.findOne({ Email });
 
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: 'Email address is already registered',
+      });
+    }
+
+    // Save a new user
     const newUser = new User({
       Name,
       Email,
@@ -27,24 +36,29 @@ exports.RegisterUser = async (req, res) => {
       Role,
     });
 
-    const Options = {
+    const emailOptions = {
       email: Email,
-      subject: "Welcome To Eccomerce Project",
+      subject: 'Welcome To Ecommerce Project',
       message: `Congratulations Buddy ${Name}`,
     };
-    await sendEmail(Options);
+    
+    // Send welcome email
+    await sendEmail(emailOptions);
+
+    // Save the new user to the database
     await newUser.save();
-    res.status(200).json({
+
+    return res.status(200).json({
       success: true,
       data: newUser,
-      message: "Register Successfull",
+      message: 'Registration successful',
     });
-
-    console.log(newUser);
-
-    console.log(req.body);
   } catch (error) {
-    console.error("Error during user registration:", error);
+    console.error('Error during user registration:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
   }
 };
 
