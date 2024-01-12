@@ -11,7 +11,7 @@ const cookiesParser = require('cookie-parser')
 
 ConnectDB();
 const corsOption = {
-  origin: 'https://seone-g7g.com',
+  origin: 'https://seoneg7g.com',
   optionSuccessStatus:200
 }
 
