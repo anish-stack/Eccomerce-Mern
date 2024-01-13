@@ -10,14 +10,19 @@ const UserRoutes = require('./routes/userroutes');
 const cookiesParser = require('cookie-parser')
 
 ConnectDB();
-const corsOptions = {
-  origin: ['https://seoneg7g.com', 'http://localhost:3000'],
-  credentials: true, // Enable credentials, including cookies
-  optionSuccessStatus: 200,
-}
+const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000'];
 
-// Middleware
-app.use(cors(corsOption));
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+}));
+
+
 app.use(cookiesParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
