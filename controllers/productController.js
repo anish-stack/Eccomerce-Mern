@@ -42,6 +42,21 @@ exports.createProduct = async (req, res) => {
     }
 
     // Rest of your code for creating the product
+const newProduct = new product({
+      ProductName,
+      ProductDescription,
+      discoundPrice,
+      prices,
+      tag,
+      sizes,
+      color,
+      image,
+      inStock,
+      category,
+      keyword,
+    });
+
+    await newProduct.save();
 
     return res.status(201).json({
       success: true,
