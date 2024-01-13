@@ -10,9 +10,10 @@ const UserRoutes = require('./routes/userroutes');
 const cookiesParser = require('cookie-parser')
 
 ConnectDB();
-const corsOption = {
-  origin: 'https://seoneg7g.com',
-  optionSuccessStatus:200
+const corsOptions = {
+  origin: ['https://seoneg7g.com', 'http://localhost:3000'],
+  credentials: true, // Enable credentials, including cookies
+  optionSuccessStatus: 200,
 }
 
 // Middleware
