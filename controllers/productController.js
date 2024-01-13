@@ -3,6 +3,8 @@ const product = require("../models/product.model");
 // Create product
 exports.createProduct = async (req, res) => {
   try {
+    console.log('Received request body:', req.body);
+
     const {
       ProductName,
       ProductDescription,
@@ -18,49 +20,38 @@ exports.createProduct = async (req, res) => {
     } = req.body;
 
     // Checking all fields
-    if (
-      !ProductName ||
-      !ProductDescription ||
-      !discoundPrice ||
-      !prices ||
-      !tag ||
-      !sizes ||
-      !color ||
-      !image ||
-      !category ||
-      !keyword
-    ) {
+    const missingFields = [];
+
+    if (!ProductName) missingFields.push('ProductName');
+    if (!ProductDescription) missingFields.push('ProductDescription');
+    if (!discoundPrice) missingFields.push('discoundPrice');
+    if (!prices) missingFields.push('prices');
+    if (!tag) missingFields.push('tag');
+    if (!sizes) missingFields.push('sizes');
+    if (!color) missingFields.push('color');
+    if (!image) missingFields.push('image');
+    if (!category) missingFields.push('category');
+    if (!keyword) missingFields.push('keyword');
+
+    if (missingFields.length > 0) {
       return res.status(400).json({
         success: false,
-        message: "Please provide all the required fields",
+        message: 'Please provide all the required fields',
+        missingFields: missingFields,
       });
     }
 
-    const newProduct = new product({
-      ProductName,
-      ProductDescription,
-      discoundPrice,
-      prices,
-      tag,
-      sizes,
-      color,
-      image,
-      inStock,
-      category,
-      keyword,
-    });
+    // Rest of your code for creating the product
 
-    await newProduct.save();
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
-      data: newProduct,
-      message: "Product added successfully",
+      message: 'Product created successfully',
     });
   } catch (error) {
-    console.error(error);
+    console.error('Error creating product:', error);
     return res.status(500).json({
       success: false,
-      message: "Internal Error",
+      message: 'Internal server error',
     });
   }
 };
