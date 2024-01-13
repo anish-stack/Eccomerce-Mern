@@ -77,9 +77,11 @@ exports.updateProduct = async (req, res) => {
     const { id } = req.params;
     const updatedFields = req.body;
 
-    const updatedProduct = await product.findByIdAndUpdate(id, updatedFields, {
-      new: true,
-    });
+    const updatedProduct = await product.findByIdAndUpdate(
+      id,
+      { $set: updatedFields },
+      { new: true }
+    );
 
     if (!updatedProduct) {
       return res.status(404).json({
@@ -101,6 +103,7 @@ exports.updateProduct = async (req, res) => {
     });
   }
 };
+
 
 // Delete product
 exports.deleteProduct = async (req, res) => {
