@@ -77,18 +77,25 @@ exports.updateProduct = async (req, res) => {
     const { id } = req.params;
     const updatedFields = req.body;
 
-    const updatedProduct = await product.findByIdAndUpdate(
-      id,
-      { $set: updatedFields },
-      { new: true }
-    );
+    // Fetch the existing product data
+    const existingProduct = await product.findById(id);
 
-    if (!updatedProduct) {
+    if (!existingProduct) {
       return res.status(404).json({
         success: false,
         message: "Product not found",
       });
     }
+
+    // Merge the existing data with the updated fields
+    const mergedFields = { ...existingProduct.toObject(), ...updatedFields };
+
+    // Update the product with the merged fields
+    const updatedProduct = await product.findByIdAndUpdate(
+      id,
+      { $set: mergedFields },
+      { new: true }
+    );
 
     return res.status(200).json({
       success: true,
