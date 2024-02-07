@@ -90,7 +90,7 @@ exports.updateProduct = async (req, res) => {
     const mergedFields = { ...existingProduct.toObject(), ...updatedFields };
 
     // Update the product with the merged fields
-    const updatedProduct = await product.findByIdAndUpdate(
+    const updatedProduct = await Product.findByIdAndUpdate(
       id,
       { $set: mergedFields },
       { new: true }
@@ -116,7 +116,7 @@ exports.deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedProduct = await product.findByIdAndDelete(id);
+    const deletedProduct = await Product.findByIdAndDelete(id);
 
     if (!deletedProduct) {
       return res.status(404).json({
@@ -142,7 +142,7 @@ exports.deleteProduct = async (req, res) => {
 // Get all products
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await product.find();
+    const products = await Product.find();
     if (!products || products.length === 0) {
       return res.status(404).json({
         success: false,
