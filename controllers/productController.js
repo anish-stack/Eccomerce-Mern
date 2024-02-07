@@ -1,4 +1,4 @@
-const product = require("../models/product.model");
+const Product = require("../models/product.model");
 
 // Create product
 exports.createProduct = async (req, res) => {
@@ -8,7 +8,7 @@ exports.createProduct = async (req, res) => {
     const {
       ProductName,
       ProductDescription,
-      discoundPrice,
+      discountPrice, // Fixed typo here
       prices,
       tag,
       sizes,
@@ -24,7 +24,6 @@ exports.createProduct = async (req, res) => {
 
     if (!ProductName) missingFields.push('ProductName');
     if (!ProductDescription) missingFields.push('ProductDescription');
-    if (!discoundPrice) missingFields.push('discoundPrice');
     if (!prices) missingFields.push('prices');
     if (!tag) missingFields.push('tag');
     if (!sizes) missingFields.push('sizes');
@@ -41,11 +40,11 @@ exports.createProduct = async (req, res) => {
       });
     }
 
-    // Rest of your code for creating the product
-const newProduct = new product({
+    // Creating the product
+    const newProduct = new Product({ // Changed 'product' to 'Product'
       ProductName,
       ProductDescription,
-      discoundPrice,
+      discountPrice, // Fixed typo here
       prices,
       tag,
       sizes,
@@ -169,7 +168,7 @@ exports.getOneProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const productData = await product.findById(id);
+    const productData = await Product.findById(id);
 
     if (!productData) {
       return res.status(404).json({
