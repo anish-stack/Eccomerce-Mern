@@ -70,6 +70,19 @@ exports.orderForMe = async (req, res) => {
   }
 };
 
+//mark order return and cancel
+exports.makeOrderCancelAndReturn = async()=>{
+  const {orderId,Stauts} = req.body
+  //check order in Order
+
+  const CheckAndUpdate = await Order.findById(orderId)
+  
+  // check order stauts 
+  if(CheckAndUpdate.orderStatus === "Pending"){
+    CheckAndUpdate.orderStatus === Stauts
+  }
+
+}
 //order for admin
 
 exports.orderForAdmin = async (req, res) => {
@@ -102,28 +115,25 @@ exports.orderForAdmin = async (req, res) => {
 //update order
 exports.UpdateOrderStatus = async (req, res) => {
   try {
-    const orderId = req.params.orderId; // Extract orderId from route parameters
-    const { status } = req.body;
+    const { status,orderId } = req.body;
+    console.log(orderId)
     // Find order details
     const orderDetails = await Order.findById(orderId);
     //   console.log(orderDetails);
-
+    console.log(orderDetails)
     // Check if orderDetails is null, indicating that the order with the given ID was not found
     if (!orderDetails) {
       return res.status(404).json({ msg: "Order not found" });
     }
-    // Check if the order is already delivered, then don't allow marking as canceled
-    if (orderDetails.orderStatus === "Delivered" && status === "Canceled") {
-      return res
-        .status(400)
-        .json({ msg: "Cannot mark as canceled, order is already delivered" });
+
+    // Check if the order is already delivered and status is not "Return", then don't allow any other updates
+    if (orderDetails.orderStatus === "Delivered" && status !== "Return") {
+      return res.status(400).json({ msg: "Cannot update, order is already delivered" });
     }
 
-    // Check if the order is already canceled, then don't allow marking as delivered
-    if (orderDetails.orderStatus === "Canceled" && status === "Delivered") {
-      return res
-        .status(400)
-        .json({ msg: "Cannot mark as delivered, order is already canceled" });
+    // Check if the order is already returned or canceled, then don't allow any other updates
+    if ((orderDetails.orderStatus === "Return" || orderDetails.orderStatus === "Canceled") && status !== "Return" && status !== "Canceled") {
+      return res.status(400).json({ msg: "Cannot update, order is already returned or canceled" });
     }
 
     // Find and update the order status
@@ -133,13 +143,20 @@ exports.UpdateOrderStatus = async (req, res) => {
       { new: true }
     );
 
-    // Respond with the updated order or other appropriate response
-    res.json({ msg: "Order status updated successfully", order: updatedOrder });
+    // Check if the status is "Return"
+    if (status === "Return") {
+      return res.json({ msg: "Order marked as returned successfully", order: updatedOrder });
+    }
+
+    // For any other status update
+    return res.json({ msg: "Order status updated successfully", order: updatedOrder });
+    
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Internal Server Error" });
+    return res.status(500).json({ msg: "Internal Server Error" });
   }
 };
+
 
 exports.getTransactionID = async(req,res)=>{
 

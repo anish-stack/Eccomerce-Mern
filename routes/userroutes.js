@@ -20,6 +20,6 @@ router.post('/create-order',protect,CreateOrder)
 router.get('/my-order',protect,orderForMe)
 router.get('/admin-order',protect,orderForAdmin)
 
-router.get('/update-order/:orderId',protect,UpdateOrderStatus)
+router.get('/update-order',protect,UpdateOrderStatus)
 
 module.exports=router 
