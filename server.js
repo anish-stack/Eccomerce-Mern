@@ -14,6 +14,12 @@ ConnectDB();
 // const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000'];
 
 
+
+app.use(cors())
+
+app.use(cors());
+
+
 app.use(cors())
 
 app.use(cors());
