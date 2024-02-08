@@ -1,10 +1,16 @@
 const mongoose = require("mongoose");
 
 const OrderSchema = new mongoose.Schema({
-  product: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
-  },
+  product: [
+    {
+      id: { type: String },
+      name: { type: String },
+      price: { type: Number },
+      quantity: { type: Number },
+      image: [{ type: String }], // Define image as an array of strings
+      sizes: { type: Number }
+    }
+  ],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -18,12 +24,16 @@ const OrderSchema = new mongoose.Schema({
       landmark: { type: String },
     },
   ],
+  PaymentDetails: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Payment",
+  },
   orderStatus: {
     type: String,
-    enum: ['Pending', 'Success', 'Delivered', 'Canceled'],
-    default: 'Pending', // Optional: Set a default value if needed
+    enum: ["Pending", "Success", "Delivered", "Canceled"],
+    default: "Pending",
   },
-}, { timestamps: true }); // Adding timestamps option
+}, { timestamps: true });
 
 const Order = mongoose.model("Order", OrderSchema);
 

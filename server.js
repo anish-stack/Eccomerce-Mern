@@ -7,20 +7,13 @@ const ConnectDB = require('./database/db');
 
 const cors = require('cors');
 const UserRoutes = require('./routes/userroutes');
-const cookiesParser = require('cookie-parser')
+const cookiesParser = require('cookie-parser');
+const Paymentrouter = require('./routes/paymentRoutes');
 
 ConnectDB();
-const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000'];
+// const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000'];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-}));
+app.use(cors())
 
 
 app.use(cookiesParser())
@@ -29,8 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/v1', UserRoutes);
+app.use('/api/v2', Paymentrouter);
+
 app.use('/', (req, res) => {
-  res.send(`<h2>Welcome to the API</h2>`);
+  res.send(`<h2>Welcome t the ApI</h2>`);
 });
 
 app.listen(Port, () => {

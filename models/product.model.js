@@ -7,7 +7,7 @@ const SizeAndStock = new mongoose.Schema({
     },
     StockNumber: {
         type: Number,
-        default: 100
+        default: 10
     }
 });
 

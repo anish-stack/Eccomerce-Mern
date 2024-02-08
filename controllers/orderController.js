@@ -2,59 +2,40 @@ const Order = require("../models/order.model");
 const Product = require("../models/product.model");
 const sendEmail = require("../utils/sendMail");
 const User = require("../models/user.model");
-
+const Payment = require("../models/PaymentModal");
 exports.CreateOrder = async (req, res) => {
   try {
-    const { productId } = req.params;
-    const user = req.user?.id;
-    const checkUser = await User.findById(user);
-    // console.log(checkUser.Email)
-    if (!productId || !user) {
-      return res.status(400).json({ msg: "No Product or User ID" });
+    const { formData } = req.body;
+
+    if (!formData) {
+      return res.status(400).json({ error: "Invalid request data" });
     }
 
-    const { address, orderStatus } = req.body;
+    const { cartItems, address } = formData;
 
-    if (!address) {
-      return res.status(400).json({ msg: "Please enter all fields" });
+    // Check if cartItems or address is empty
+    if (!cartItems || Object.keys(cartItems).length === 0 || !address) {
+      return res.status(422).json({ error: "Cart items or address is empty" });
     }
 
-    // Fetch product details
-    const product = await Product.findById(productId);
+    const userId = req.user.id; // Assuming user ID is retrieved correctly
 
-    if (!product) {
-      return res.status(404).json({ msg: "Product not found" });
-    }
-
-    // Create the order using the Order model
     const newOrder = new Order({
-      product: productId,
-      user,
+      product: cartItems,
       address,
-      orderStatus,
+      user: userId
     });
-    // 
 
-    // Save the order to the database
     await newOrder.save();
-    console.log(newOrder.orderStatus);
 
-    // Send email with order details and congratulatory message
-    const Options = {
-      email: checkUser.Email,
-      subject: "Welcome To Ecommerce Project",
-      message: `Congratulations, ${checkUser.Name}! Your order details: \n\nProduct: ${product.ProductName}\nOrder Status: ${newOrder.orderStatus}\n\nThank you for shopping with us!`,
-    };
-
-    await sendEmail(Options);
-
-    // Respond with success message or other appropriate response
-    res
-      .status(201)
-      .json({ msg: "Order created successfully", order: newOrder });
+    return res.status(201).json({
+      success: true,
+      msg: "Order created",
+      newOrder
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: "Internal Server Error" });
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -78,7 +59,7 @@ exports.orderForMe = async (req, res) => {
     res.status(201).json({
       success: true,
       message: " Order Found",
-      data: CheckUserInOrder,
+      data: CheckUserInOrder.reverse(),
     });
   } catch (error) {
     console.log(error);
@@ -159,3 +140,29 @@ exports.UpdateOrderStatus = async (req, res) => {
     res.status(500).json({ msg: "Internal Server Error" });
   }
 };
+
+exports.getTransactionID = async(req,res)=>{
+
+  try {
+    const OrderId = req.params.OrderId
+    //check Orderid In Payment Modal
+
+    const checkOrder = await Payment.findOne({order:OrderId})
+    if(!checkOrder){
+      return res.status(403).json({
+        success:true,
+        msg:"No _order Found"
+      })
+    }
+    //send Transaction Id
+    const TransactionId  = checkOrder.tranxTionId
+    res.status(201).json({
+      success:true,
+      data:TransactionId
+    })
+  } catch (error) {
+    console.log(error)
+  }
+
+
+}
