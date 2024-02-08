@@ -13,11 +13,11 @@ const Paymentrouter = require('./routes/paymentRoutes');
 ConnectDB();
 // const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000'];
 
-<<<<<<< HEAD
+
 app.use(cors())
-=======
+
 app.use(cors());
->>>>>>> c10f312ef67122d9801bd75f3bc12efcb77568e6
+
 
 
 app.use(cookiesParser())
