@@ -12,15 +12,7 @@ const cookiesParser = require('cookie-parser')
 ConnectDB();
 const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000'];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-}));
+app.use(cors());
 
 
 app.use(cookiesParser())
