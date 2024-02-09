@@ -12,7 +12,7 @@ const cookiesParser = require('cookie-parser');
 // Import helmet for security headers
 
 ConnectDB();
-const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000','https://shree-ram-admin-panel.vercel.app/'];
+const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000','https://shree-ram-admin-panel.vercel.app'];
 
 // Middlewareapp.use(helmet()); // Use helmet for security headers
 app.use(cors({
