@@ -121,7 +121,7 @@ exports.UpdateOrderStatus = async (req, res) => {
     // Find order details
     const orderDetails = await Order.findById(orderId);
     //   console.log(orderDetails);
-    console.log(orderDetails)
+    // console.log(orderDetails)
     // Check if orderDetails is null, indicating that the order with the given ID was not found
     if (!orderDetails) {
       return res.status(404).json({ msg: "Order not found" });
