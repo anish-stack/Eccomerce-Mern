@@ -1,5 +1,5 @@
 const express = require('express')
-const { RegisterUser, LogginUser, LogoutUser } = require('../controllers/usercontroller')
+const { RegisterUser, LogginUser, LogoutUser,getUserIdbyUser } = require('../controllers/usercontroller')
 const { createProduct, getAllProducts, getOneProduct, updateProduct, deleteProduct } = require('../controllers/productController')
 const { protect } = require('../middleware/authmiddlleware')
 const { CreateOrder, orderForMe, orderForAdmin, UpdateOrderStatus, getTransactionID } = require('../controllers/orderController')
@@ -19,6 +19,7 @@ router.get('/get-Transication-id/:OrderId',getTransactionID);
 router.post('/create-order',protect,CreateOrder)
 router.get('/my-order',protect,orderForMe)
 router.get('/admin-order',protect,orderForAdmin)
+router.get('/finduserbyid/:user_id',getUserIdbyUser)
 
 router.get('/update-order',UpdateOrderStatus)
 

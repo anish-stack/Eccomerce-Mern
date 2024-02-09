@@ -126,3 +126,28 @@ exports.LogoutUser = async (req,res) =>{
 }
 
 
+exports.getUserIdbyUser = async(req,res)=>{
+  try{
+    let userid= req.params.user_id;
+    let UserInfo = await User.findById(userid,-"password");
+    if(!UserInfo){
+      return res.status(403).json({
+        success: false,
+        msg: 'user is not found'
+      })
+    }
+    
+   
+
+    return res.status(200).json({
+      success: true,
+      msg: 'user is found',
+      data : UserInfo
+    })
+
+
+  }
+  catch(error){
+    console.log(error)
+  }
+}

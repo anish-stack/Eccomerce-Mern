@@ -18,6 +18,7 @@ const UserSchema = mongoose.Schema(
     Password: {
       type: String,
       required: true,
+      select: false
     },
     ContactNumber: {
       type: Number,
