@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const SizeAndStock = new mongoose.Schema({
     SizeNumber: {
-        type: Number,
+        type: String,
         required: [true, "Please provide a size number"] // Changed this
     },
     StockNumber: {
-        type: Number,
+        type: String,
         default: 10
     }
 });
