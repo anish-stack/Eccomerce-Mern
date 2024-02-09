@@ -1,5 +1,5 @@
-const merchantid="PGTESTPAYUAT"
-const apikey ="099eb0cd-02cf-4e2a-8aca-3e6c6aff0399"
+const merchantid=process.env.PHONEPEMERCHENTID
+const apikey =process.env.PHONEPEKEY
 const crypto =  require('crypto');
 const axios = require('axios');
 const Payment = require('../models/PaymentModal')
@@ -37,7 +37,7 @@ exports.newPayment = async (req, res) => {
         const sha256 = crypto.createHash('sha256').update(string).digest('hex');
         const checksum = sha256 + '###' + keyIndex;
 
-        const prod_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
+        const prod_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
         const options = {
             method: 'POST',
             url: prod_URL,
@@ -107,7 +107,7 @@ exports.checkStatus = async (req, res) => {
     // Prepare the options for the HTTP request
     const options = {
         method: 'GET',
-        url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchantId}/${merchantTransactionId}`,
+        url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${merchantTransactionId}`,
         headers: {
             accept: 'application/json',
             'Content-Type': 'application/json',
