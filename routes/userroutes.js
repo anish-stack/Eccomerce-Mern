@@ -21,6 +21,6 @@ router.get('/my-order',protect,orderForMe)
 router.get('/admin-order',protect,orderForAdmin)
 router.get('/finduserbyid/:user_id',getUserIdbyUser)
 
-router.get('/update-order',UpdateOrderStatus)
+router.post('/update-order',UpdateOrderStatus)
 
 module.exports=router 
