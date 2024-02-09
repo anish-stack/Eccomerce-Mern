@@ -10,7 +10,9 @@ const sendToken = async (user, res, StatusCode) => {
       path: "/",
       expiresIn: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
       httpOnly: true,
-      sameSite: "lax",
+      domain: "localhost",
+
+       sameSite: "strict",
     };
 
     // Set the 'token' cookie with the token value and options
