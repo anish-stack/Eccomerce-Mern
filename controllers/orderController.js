@@ -116,6 +116,7 @@ exports.orderForAdmin = async (req, res) => {
 //update order
 exports.UpdateOrderStatus = async (req, res) => {
   try {
+    const { status, orderId } = req.body;
 
     console.log(req.body)
 
