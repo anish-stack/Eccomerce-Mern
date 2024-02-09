@@ -87,8 +87,9 @@ exports.makeOrderCancelAndReturn = async()=>{
 
 exports.orderForAdmin = async (req, res) => {
   try {
+    console.log("i am  here");
     const CheckUserInOrder = await Order.find();
-
+    console.log(CheckUserInOrder);
     if (!CheckUserInOrder.length > 0) {
       return res.status(404).json({
         success: false,

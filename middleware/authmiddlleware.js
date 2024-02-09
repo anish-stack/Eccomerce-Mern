@@ -3,10 +3,9 @@ const jwt = require('jsonwebtoken');
 exports.protect = async (req, res, next) => {
   try {
     // Extract the token from various sources (cookies, body, headers)
-    const token =
-      req.cookies.token || req.body.token || (req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : '');
-
-    console.log(token);
+    const token =req.cookies.token 
+    
+    console.log(req.cookies.token);
 
     if (!token) {
       return res.status(401).json({

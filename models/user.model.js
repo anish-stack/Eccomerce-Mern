@@ -70,17 +70,7 @@ UserSchema.methods.comparePassword = async function (enteredPassword) {
   } catch (error) {
     throw new Error('Password comparison failed', error);
   }
-};UserSchema.methods.getJwtToken = function () {
-  try {
-    const token = jwt.sign({ id: this._id, email: this.email }, process.env.JWT_SECRET, {
-      expiresIn: '48h', // Adjust the expiration time as needed
-    });
-    return token;
-  } catch (error) {
-    console.error('Error generating JWT token:', error);
-    throw new Error('Error generating JWT token');
-  }
-};
+}
 
 const User = mongoose.model("User", UserSchema);
 
