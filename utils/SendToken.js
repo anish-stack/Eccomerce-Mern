@@ -6,14 +6,13 @@ const sendToken = async (user, res, StatusCode) => {
       expiresIn: "10h",
     });
 
-    const options = {
-      path: "/",
-      expiresIn: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-      httpOnly: true,
-      domain: "localhost",
-
-       sameSite: "strict",
-    };
+   const options = {
+  path: "/",
+  domain: "seoneg7g.com", // Set domain to the desired domain without the protocol (https://)
+  expiresIn: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+  httpOnly: true,
+  sameSite: "strict",
+};
 
     // Set the 'token' cookie with the token value and options
     res.cookie('token', token, options);
