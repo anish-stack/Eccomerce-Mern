@@ -116,8 +116,9 @@ exports.orderForAdmin = async (req, res) => {
 //update order
 exports.UpdateOrderStatus = async (req, res) => {
   try {
-    const { status, orderId } = req.body;
+
     console.log(req.body)
+
     // Input validation
     if (!status || !orderId) {
       return res.status(400).json({ msg: "Missing status or orderId in request body" });
