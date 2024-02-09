@@ -116,25 +116,19 @@ exports.orderForAdmin = async (req, res) => {
 //update order
 exports.UpdateOrderStatus = async (req, res) => {
   try {
-    const { status,orderId } = req.body;
-    console.log(orderId)
+    const { status, orderId } = req.body;
+    console.log(req.body)
+    // Input validation
+    if (!status || !orderId) {
+      return res.status(400).json({ msg: "Missing status or orderId in request body" });
+    }
+
     // Find order details
     const orderDetails = await Order.findById(orderId);
-    //   console.log(orderDetails);
-    console.log(orderDetails)
+
     // Check if orderDetails is null, indicating that the order with the given ID was not found
     if (!orderDetails) {
       return res.status(404).json({ msg: "Order not found" });
-    }
-
-    // Check if the order is already delivered and status is not "Return", then don't allow any other updates
-    if (orderDetails.orderStatus === "Delivered" && status !== "Return") {
-      return res.status(400).json({ msg: "Cannot update, order is already delivered" });
-    }
-
-    // Check if the order is already returned or canceled, then don't allow any other updates
-    if ((orderDetails.orderStatus === "Return" || orderDetails.orderStatus === "Canceled") && status !== "Return" && status !== "Canceled") {
-      return res.status(400).json({ msg: "Cannot update, order is already returned or canceled" });
     }
 
     // Find and update the order status
@@ -144,17 +138,14 @@ exports.UpdateOrderStatus = async (req, res) => {
       { new: true }
     );
 
-    // Check if the status is "Return"
-    if (status === "Return") {
-      return res.json({ msg: "Order marked as returned successfully", order: updatedOrder });
-    }
+    
 
     // For any other status update
     return res.json({ msg: "Order status updated successfully", order: updatedOrder });
-    
+
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ msg: "Internal Server Error" });
+    return res.status(500).json({ msg: "Internal Server Error", error: error.message });
   }
 };
 

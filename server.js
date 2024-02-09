@@ -9,6 +9,7 @@ const cors = require('cors');
 const UserRoutes = require('./routes/userroutes');
 const Paymentrouter = require('./routes/paymentRoutes');
 const cookiesParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 // Import helmet for security headers
 
 ConnectDB();
@@ -20,6 +21,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(cookiesParser())
+app.use(bodyParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
