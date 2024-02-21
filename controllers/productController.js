@@ -77,7 +77,7 @@ exports.updateProduct = async (req, res) => {
     const updatedFields = req.body;
 
     // Fetch the existing product data
-    const existingProduct = await product.findById(id);
+    const existingProduct = await Product.findById(id);
 
     if (!existingProduct) {
       return res.status(404).json({
