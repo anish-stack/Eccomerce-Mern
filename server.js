@@ -12,10 +12,13 @@ const cookiesParser = require('cookie-parser');
 // Import helmet for security headers
 
 ConnectDB();
+const allowedOrigins = ['https://seoneg7g.com', 'http://localhost:3000'];
 
-
-app.use(cors());
-
+// Middlewareapp.use(helmet()); // Use helmet for security headers
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 app.use(cookiesParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
