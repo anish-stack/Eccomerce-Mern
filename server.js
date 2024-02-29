@@ -12,7 +12,18 @@ const cookiesParser = require('cookie-parser');
 // Import helmet for security headers
 
 ConnectDB();
-app.use(cors())
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Check if the origin is in the allowedOrigins array or if it's undefined (non-browser requests)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(cookiesParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
